@@ -39,6 +39,7 @@ def gen_module_doc(fullname, toctree=None):
         doc_src += rst.section('Modules')
         doc_src += str(toctree)
 
+    doc_src += rst.section("Reference")
     doc_src += rst.automodule(fullname)
 
     return doc_src
