@@ -42,6 +42,8 @@ class Toctree(object):
             '',
         ] + [
             indent + e for e in self.entries
+        ] + [
+            ''
         ]
 
         return '\n'.join(toctree_directive)
