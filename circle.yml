@@ -1,0 +1,31 @@
+machine:
+  post:
+    - pyenv install --skip-existing 2.7.12
+    - pyenv install --skip-existing 3.4.5
+    - pyenv install --skip-existing 3.5.2
+    - pyenv global 2.7.10 3.3.6 3.4.5 3.5.2
+
+
+dependencies:
+  cache_directories:
+    - /opt/circleci/python
+    - ./.tox/py27
+    - ./.tox/py34
+    - ./.tox/py35
+    - ./.tox/docs
+
+  override:
+    - pip install tox
+    - tox --notest  # Install all the envs so they get cached
+
+
+test:
+  override:
+    - ./project.sh lint
+    - tox
+    - mv ./local/dist/test-results.xml $CIRCLE_TEST_REPORTS/
+    - mv ./docs/html ./local/dist/docs
+
+  post:
+    - ./project.sh pkg
+    - mv local/dist/** "$CIRCLE_ARTIFACTS/"
