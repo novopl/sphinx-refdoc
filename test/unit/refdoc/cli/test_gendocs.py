@@ -12,4 +12,4 @@ def test_uses_gen_reference_docs(gen_reference_docs):
     result = runner.invoke(gendocs, ['src', 'dst'])
 
     assert result.exit_code == 0
-    gen_reference_docs.assert_called_once()
+    gen_reference_docs.assert_called_once_with('src', 'dst')
