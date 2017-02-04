@@ -23,7 +23,6 @@ from refdoc import gen_reference_docs
 __all__ = [
     'check',
     'clean',
-    'devinit',
     'gendocs',
     'lint',
     'lint_changes',
@@ -55,27 +54,6 @@ def clean():
 
     for pattern in patterns:
         rm_glob(pattern)
-
-
-def devinit():
-    """ Initialize development environment.
-
-    This will run in the current virtualenv (or globally if none is active at
-    the moment).
-    """
-    sysmsg("Initializing development environment")
-
-    infomsg("Updating pip and setuptools")
-    local('pip install -U pip setuptools')
-
-    infomsg("Installing dependencies")
-    local('pip install -r requirements.txt')
-
-    infomsg("Installing development dependencies")
-    local('pip install -r devrequirements.txt')
-
-    infomsg("Running setup.py develop")
-    local('python setup.py develop')
 
 
 def gendocs():

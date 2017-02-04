@@ -15,14 +15,14 @@ dependencies:
     - ./.tox/docs
 
   override:
-    - pip install tox
+    - ./devinit.sh
     - tox --notest  # Install all the envs so they get cached
 
 
 test:
   override:
-    - ./project.sh lint
-    - tox
+    - fab lint
+    - fab testall
     - mv ./local/dist/test-results.xml $CIRCLE_TEST_REPORTS/
     - mv ./docs/html ./local/dist/docs
 
