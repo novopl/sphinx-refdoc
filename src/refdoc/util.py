@@ -17,28 +17,33 @@ the documentation for the given package.
 """
 
 
-def print_ref_file_tree(pkgs):
-    """ Print reference documentation files as a nice tree.
+def gen_ref_file_tree(pkgs):
+    """ Generate a nice tree for the reference documentation files.
 
     :param list<Package> pkgs:
         List of documented packages.
-    :return:
+    :return str:
+        A tree ready to be printed with fixed-width font.
     """
+    lines = []
     pkg_count = len(pkgs)
+
     for i, pkg in enumerate(pkgs):
         if i < pkg_count - 1:
             prefix = '|   '
-            print("├── {}".format(pkg.fullname))
+            lines.append("├── {}".format(pkg.fullname))
         else:
             prefix = '    '
-            print("└── {}".format(pkg.fullname))
+            lines.append("└── {}".format(pkg.fullname))
 
         mod_count = len(pkg.modules)
         for j, module in enumerate(pkg.modules):
             if j < mod_count - 1:
-                print(prefix + "├── {}".format(module))
+                lines.append(prefix + "├── {}".format(module))
             else:
-                print(prefix + "└── {}".format(module))
+                lines.append(prefix + "└── {}".format(module))
+
+    return '\n'.join(lines)
 
 
 def get_packages(rootdir):

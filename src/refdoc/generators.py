@@ -5,7 +5,7 @@ from os.path import dirname, exists, join
 
 from . import rst
 from .toctree import Toctree
-from .util import print_ref_file_tree, get_packages
+from .util import get_packages, gen_ref_file_tree
 
 
 def write_file(path, text):
@@ -88,7 +88,7 @@ def gen_reference_docs(src_dir, dst_dir):
     pkgs = get_packages(src_dir)
 
     print("Generating reference documentation for:")
-    print_ref_file_tree(pkgs)
+    print(gen_ref_file_tree(pkgs))
 
     main_toc = Toctree()
     for pkg in pkgs:
