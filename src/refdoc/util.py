@@ -1,20 +1,26 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
-from collections import namedtuple
 from os import walk, sep
 from os.path import relpath
 
+import attr
 
-Package = namedtuple('Package', 'fullname path relpath modules')
-"""
-Represents a python package. This is all the information needed to generate
-the documentation for the given package.
 
-:var fullname:  Package fully qualified name.
-:var path:      Path to the package.
-:var relpath:   Package path relative to the source directory.
-:var modules:   A list of python modules within the package.
-"""
+@attr.s
+class Package(object):
+    """
+    Represents a python package. This is all the information needed to generate
+    the documentation for the given package.
+
+    :var fullname:  Package fully qualified name.
+    :var path:      Path to the package.
+    :var relpath:   Package path relative to the source directory.
+    :var modules:   A list of python modules within the package.
+    """
+    fullname = attr.ib()
+    path = attr.ib(default=None)
+    relpath = attr.ib(default=None)
+    modules = attr.ib(default=[])
 
 
 def gen_ref_file_tree(pkgs):
