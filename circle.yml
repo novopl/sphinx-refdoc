@@ -1,6 +1,7 @@
 machine:
   post:
     - pyenv install --skip-existing 2.7.12
+    - pyenv install --skip-existing 3.3.6
     - pyenv install --skip-existing 3.4.5
     - pyenv install --skip-existing 3.5.2
     - pyenv global 2.7.10 3.3.6 3.4.5 3.5.2
@@ -10,6 +11,7 @@ dependencies:
   cache_directories:
     - /opt/circleci/python
     - ./.tox/py27
+    - ./.tox/py33
     - ./.tox/py34
     - ./.tox/py35
     - ./.tox/docs
