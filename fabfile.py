@@ -95,7 +95,6 @@ def release(component='patch', target='local'):
         exit(1)
 
     infomsg("Bumping package version")
-
     old_ver, new_ver = bump_version_file('VERSION', component)
     infomsg("  old version: \033[35m{}".format(old_ver))
     infomsg("  new version: \033[35m{}".format(new_ver))
@@ -105,9 +104,8 @@ def release(component='patch', target='local'):
         local('python setup.py sdist register -r "{}"'.format(target))
         local('python setup.py sdist upload -r "{}"'.format(target))
 
-    # Commit the bumped version
+    infomsg("Creating commit that marks the release")
     with quiet():
-        infomsg("Creating commit that marks the release")
         local('git add VERSION && git commit -m "Release: v{}"'.format(new_ver))
         local('git tag -a "{ver}" -m "Mark {ver} release"'.format(ver=new_ver))
 
@@ -120,7 +118,7 @@ def test(quick=False, junit=False):
 
     if not quick:
         args += [
-            '--cov',
+            '--cov=src/refdoc',
             '--cov-report=term:skip-covered',
             '--cov-report=html:{}/coverage'.format(DIST_DIR),
         ]
