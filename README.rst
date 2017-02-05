@@ -1,3 +1,5 @@
+.. image:: https://circleci.com/gh/novopl/sphinx-refdoc.svg?style=shield&circle-token=dc2b684d5decc1458c6c240fde9b4b548290c10c
+    :target: https://circleci.com/gh/novopl/sphinx-refdoc/tree/master
 
 About
 =====
