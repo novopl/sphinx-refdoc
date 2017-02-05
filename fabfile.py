@@ -7,6 +7,7 @@ from os import environ, makedirs
 from os.path import exists
 
 from fabric.api import local, quiet
+from fabutils.lint import LintError
 from fabutils.api import (
     bump_version_file,
     infomsg,
@@ -69,14 +70,24 @@ def gendocs():
 
 def lint_changes():
     """ Run pep8 and pylint against files changed since last commit. """
-    if not lint_files(p for p in get_changed_files() if exists(p)):
-        exit(1)
+    try:
+        changed_files = get_changed_files()
+        if not lint_files(p for p in changed_files if exists(p)):
+            exit(1)
+    except LintError:
+        # There are no files to lint
+        pass
 
 
 def lint_commit():
     """ Run pep8 and pylint against files staged for commit. """
-    if not lint_files(p for p in get_staged_files() if exists(p)):
-        exit(1)
+    try:
+        staged_files = get_staged_files()
+        if not lint_files(p for p in staged_files if exists(p)):
+            exit(1)
+    except LintError:
+        # There are no files to lint
+        pass
 
 
 def lint():
@@ -86,6 +97,11 @@ def lint():
 
 
 def release(component='patch', target='local'):
+    """ Release a new version of the project.
+
+    This will bump the version number (patch component by default) + add and tag
+    a commit with that change. Finally it will upload the package to pypi.
+    """
     with quiet():
         git_status = local('git status --porcelain', capture=True).strip()
         has_changes = len(git_status) > 0
