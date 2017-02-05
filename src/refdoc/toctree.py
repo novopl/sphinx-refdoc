@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+Sphinx toctree directive generator.
+"""
 from __future__ import absolute_import
 from os.path import splitext
 
@@ -26,7 +29,7 @@ class Toctree(object):
             without (as Sphinx uses file names without the extension for
             toctree entries).
         """
-        name, ext = splitext(entry)
+        name, _ = splitext(entry)
         self.entries.append(name)
 
     def __str__(self):

@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+This is the main business logic behind reference generation. Various functions
+here generate different parts of the final documentation source.
+"""
 from __future__ import absolute_import
 from os import makedirs
 from os.path import dirname, exists, join
