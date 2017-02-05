@@ -99,15 +99,15 @@ def release(component='patch', target='local'):
     infomsg("  old version: \033[35m{}".format(old_ver))
     infomsg("  new version: \033[35m{}".format(new_ver))
 
-    infomsg("Uploading to pypi server \033[33m{}".format(target))
-    with quiet():
-        local('python setup.py sdist register -r "{}"'.format(target))
-        local('python setup.py sdist upload -r "{}"'.format(target))
-
     infomsg("Creating commit that marks the release")
     with quiet():
         local('git add VERSION && git commit -m "Release: v{}"'.format(new_ver))
         local('git tag -a "{ver}" -m "Mark {ver} release"'.format(ver=new_ver))
+
+    infomsg("Uploading to pypi server \033[33m{}".format(target))
+    with quiet():
+        local('python setup.py sdist register -r "{}"'.format(target))
+        local('python setup.py sdist upload -r "{}"'.format(target))
 
 
 def test(quick=False, junit=False):
