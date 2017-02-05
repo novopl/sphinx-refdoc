@@ -14,7 +14,6 @@ dependencies:
     - ./.tox/py33
     - ./.tox/py34
     - ./.tox/py35
-    - ./.tox/docs
 
   override:
     - ./devinit.sh
@@ -25,6 +24,7 @@ test:
   override:
     - fab lint
     - fab testall
+    - fab gendocs
     - mv ./docs/html ./local/dist/docs
     - cp ./local/dist/test-results.xml $CIRCLE_TEST_REPORTS/
 
