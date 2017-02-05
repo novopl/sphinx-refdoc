@@ -1,4 +1,4 @@
-.. image:: https://circleci.com/gh/novopl/sphinx-refdoc.svg?style=shield&circle-token=dc2b684d5decc1458c6c240fde9b4b548290c10c
+.. image:: https://circleci.com/gh/novopl/sphinx-refdoc.svg?style=shield&circle-token=6e5a5984421c7a4ec1de8efbe6e9ff10e6610e36
     :target: https://circleci.com/gh/novopl/sphinx-refdoc/tree/master
 
 About
