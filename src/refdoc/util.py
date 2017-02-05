@@ -39,20 +39,20 @@ def gen_ref_file_tree(pkgs):
 
     for i, pkg in enumerate(pkgs):
         if i < pkg_count - 1:
-            prefix = '|   '
-            lines.append("├── {}".format(pkg.fullname))
+            prefix = u'|   '
+            lines.append(u"├── {}".format(pkg.fullname))
         else:
             prefix = '    '
-            lines.append("└── {}".format(pkg.fullname))
+            lines.append(u"└── {}".format(pkg.fullname))
 
         mod_count = len(pkg.modules)
         for j, module in enumerate(pkg.modules):
             if j < mod_count - 1:
-                lines.append(prefix + "├── {}".format(module))
+                lines.append(prefix + u"├── {}".format(module))
             else:
-                lines.append(prefix + "└── {}".format(module))
+                lines.append(prefix + u"└── {}".format(module))
 
-    return '\n'.join(lines)
+    return u'\n'.join(lines)
 
 
 def is_pkg(path):

@@ -25,9 +25,8 @@ test:
   override:
     - fab lint
     - fab testall
-    - mv ./local/dist/test-results.xml $CIRCLE_TEST_REPORTS/
     - mv ./docs/html ./local/dist/docs
+    - cp ./local/dist/test-results.xml $CIRCLE_TEST_REPORTS/
 
   post:
-    - ./project.sh pkg
     - mv local/dist/** "$CIRCLE_ARTIFACTS/"
