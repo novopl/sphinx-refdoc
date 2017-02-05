@@ -8,6 +8,7 @@ def read(fname):
 
 setup(
     name="sphinx-refdoc",
+    url="https://github.com/novopl/sphinx-refdoc",
     version=read('VERSION').strip(),
     author="Mateusz 'novo' Klos",
     author_email="novopl@gmail.com",
