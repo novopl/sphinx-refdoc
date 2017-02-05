@@ -4,7 +4,8 @@ machine:
     - pyenv install --skip-existing 3.3.6
     - pyenv install --skip-existing 3.4.5
     - pyenv install --skip-existing 3.5.2
-    - pyenv global 2.7.10 3.3.6 3.4.5 3.5.2
+    - pyenv install --skip-existing 3.6.0
+    - pyenv global 2.7.10 3.3.6 3.4.5 3.5.2 3.6.0
 
 
 dependencies:
@@ -14,6 +15,7 @@ dependencies:
     - ./.tox/py33
     - ./.tox/py34
     - ./.tox/py35
+    - ./.tox/py36
 
   override:
     - ./devinit.sh
