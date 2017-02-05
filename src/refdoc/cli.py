@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+cli interface. Very simple for now.
+"""
 from __future__ import absolute_import
 import click
 

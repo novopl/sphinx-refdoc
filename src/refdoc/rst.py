@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+Simple generators for reStructuredText directives.
+"""
 from __future__ import absolute_import
 
 

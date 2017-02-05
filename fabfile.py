@@ -7,6 +7,7 @@ from os import environ, makedirs
 from os.path import exists
 
 from fabric.api import local, quiet
+from fabutils.lint import LintError
 from fabutils.api import (
     bump_version_file,
     infomsg,
@@ -23,7 +24,6 @@ from refdoc import gen_reference_docs
 __all__ = [
     'check',
     'clean',
-    'devinit',
     'gendocs',
     'lint',
     'lint_changes',
@@ -57,27 +57,6 @@ def clean():
         rm_glob(pattern)
 
 
-def devinit():
-    """ Initialize development environment.
-
-    This will run in the current virtualenv (or globally if none is active at
-    the moment).
-    """
-    sysmsg("Initializing development environment")
-
-    infomsg("Updating pip and setuptools")
-    local('pip install -U pip setuptools')
-
-    infomsg("Installing dependencies")
-    local('pip install -r requirements.txt')
-
-    infomsg("Installing development dependencies")
-    local('pip install -r devrequirements.txt')
-
-    infomsg("Running setup.py develop")
-    local('python setup.py develop')
-
-
 def gendocs():
     """ Build project documentation. """
     gen_reference_docs(SRC_DIR, dst_dir='docs/ref')
@@ -91,14 +70,24 @@ def gendocs():
 
 def lint_changes():
     """ Run pep8 and pylint against files changed since last commit. """
-    if not lint_files(p for p in get_changed_files() if exists(p)):
-        exit(1)
+    try:
+        changed_files = get_changed_files()
+        if not lint_files(p for p in changed_files if exists(p)):
+            exit(1)
+    except LintError:
+        # There are no files to lint
+        pass
 
 
 def lint_commit():
     """ Run pep8 and pylint against files staged for commit. """
-    if not lint_files(p for p in get_staged_files() if exists(p)):
-        exit(1)
+    try:
+        staged_files = get_staged_files()
+        if not lint_files(p for p in staged_files if exists(p)):
+            exit(1)
+    except LintError:
+        # There are no files to lint
+        pass
 
 
 def lint():
@@ -108,6 +97,11 @@ def lint():
 
 
 def release(component='patch', target='local'):
+    """ Release a new version of the project.
+
+    This will bump the version number (patch component by default) + add and tag
+    a commit with that change. Finally it will upload the package to pypi.
+    """
     with quiet():
         git_status = local('git status --porcelain', capture=True).strip()
         has_changes = len(git_status) > 0
@@ -117,21 +111,19 @@ def release(component='patch', target='local'):
         exit(1)
 
     infomsg("Bumping package version")
-
     old_ver, new_ver = bump_version_file('VERSION', component)
     infomsg("  old version: \033[35m{}".format(old_ver))
     infomsg("  new version: \033[35m{}".format(new_ver))
+
+    infomsg("Creating commit that marks the release")
+    with quiet():
+        local('git add VERSION && git commit -m "Release: v{}"'.format(new_ver))
+        local('git tag -a "{ver}" -m "Mark {ver} release"'.format(ver=new_ver))
 
     infomsg("Uploading to pypi server \033[33m{}".format(target))
     with quiet():
         local('python setup.py sdist register -r "{}"'.format(target))
         local('python setup.py sdist upload -r "{}"'.format(target))
-
-    # Commit the bumped version
-    with quiet():
-        infomsg("Creating commit that marks the release")
-        local('git add VERSION && git commit -m "Release: v{}"'.format(new_ver))
-        local('git tag -a "{ver}" -m "Mark {ver} release"'.format(ver=new_ver))
 
 
 def test(quick=False, junit=False):
@@ -142,7 +134,7 @@ def test(quick=False, junit=False):
 
     if not quick:
         args += [
-            '--cov',
+            '--cov=src/refdoc',
             '--cov-report=term:skip-covered',
             '--cov-report=html:{}/coverage'.format(DIST_DIR),
         ]

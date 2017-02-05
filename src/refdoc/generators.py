@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
+"""
+This is the main business logic behind reference generation. Various functions
+here generate different parts of the final documentation source.
+"""
 from __future__ import absolute_import
 from os import makedirs
 from os.path import dirname, exists, join
 
 from . import rst
 from .toctree import Toctree
-from .util import print_ref_file_tree, get_packages
+from .util import get_packages, gen_ref_file_tree
 
 
 def write_file(path, text):
@@ -45,7 +49,7 @@ def gen_module_doc(fullname, toctree=None):
     return doc_src
 
 
-def gen_pkg_docs(pkg, dist_dir):
+def gen_pkg_reference(pkg, dist_dir):
     """ Generate reference documentation for a given python package.
 
     :param Package pkg:
@@ -82,17 +86,17 @@ def gen_reference_docs(src_dir, dst_dir):
 
     :param str src_dir:
         Path to the source code we want to generated reference for.
-    :param str dest_dir:
+    :param str dst_dir:
         Where the resulting files will be stored. If the
     """
     pkgs = get_packages(src_dir)
 
     print("Generating reference documentation for:")
-    print_ref_file_tree(pkgs)
+    print(gen_ref_file_tree(pkgs))
 
     main_toc = Toctree()
     for pkg in pkgs:
-        pkg_index_file = gen_pkg_docs(pkg, dst_dir)
+        pkg_index_file = gen_pkg_reference(pkg, dst_dir)
         main_toc.add(pkg_index_file)
 
     reference_index_content = '\n'.join([
