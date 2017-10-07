@@ -6,11 +6,12 @@ to justify a separate module.
 from __future__ import absolute_import, unicode_literals
 import os
 from os.path import exists
+from shutil import rmtree
 
 from fabric.api import local, lcd, shell_env
 from refdoc import gen_reference_docs
 
-from .common import _repo_path, _rm_glob, _sysmsg
+from .common import _repo_path, _rm_glob, _sysmsg, _is_true
 
 
 ASSETS_PATH = _repo_path('docs/assets')
@@ -37,14 +38,24 @@ def clean():
         _rm_glob(pattern)
 
 
-def docs():
+def docs(recreate='no'):
     """ Build project documentation. """
     _sysmsg('Ensuring assets directory ^94{}^32 exists', ASSETS_PATH)
     if not exists(ASSETS_PATH):
         os.makedirs(ASSETS_PATH)
 
+    if _is_true(recreate) and exists(OUT_PATH):
+        _sysmsg("^91Deleting ^94{}".format(OUT_PATH))
+        rmtree(OUT_PATH)
+
     _sysmsg('Generating reference documentation')
-    gen_reference_docs(SRC_PATH, dst_dir=REF_DOCS_PATH)
+    gen_reference_docs(
+        [
+            SRC_PATH,
+            _repo_path('ops/commands')
+        ],
+        dst_dir=REF_DOCS_PATH
+    )
 
     with shell_env(PYTHONPATH=SRC_PATH):
         with lcd(DOCS_PATH):
