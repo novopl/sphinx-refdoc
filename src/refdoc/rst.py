@@ -3,6 +3,7 @@
 Simple generators for reStructuredText directives.
 """
 from __future__ import absolute_import
+import itertools
 
 
 def title(title):
@@ -58,7 +59,7 @@ def section(name, underline_char='='):
     ))
 
 
-def automodule(name):
+def automodule(name, members=True):
     """ Generate reST automodule directive for the given module.
 
     :Examples:
@@ -70,9 +71,32 @@ def automodule(name):
     <BLANKLINE>
     '''
     """
-    return '\n'.join((
+    lines = [
         '',
         '.. automodule:: {}'.format(name),
-        '    :members:',
+    ]
+    if members:
+        lines.append('    :members:')
+    return '\n'.join(lines)
+
+
+def autosummary(names):
+    """ Generate reST automodule directive for the given module.
+
+    :Examples:
+
+    >>> autosummary(['my.test.module', 'my.test.module2'])
+    '''
+    .. autosummary::
+        my.test.module1
+        my.test.module2
+    <BLANKLINE>
+    '''
+    """
+    lines = [
         '',
-    ))
+        '.. autosummary::',
+    ]
+    lines += ['    {}'.format(name) for name in names]
+    lines.append('')
+    return '\n'.join(lines)
