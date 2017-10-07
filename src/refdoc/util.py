@@ -64,28 +64,13 @@ def get_packages(rootdir):
     """ Find all packages in the given root directory. """
     basedir = dirname(rootdir)
 
-    def _get_package_full_name(rel_path):
-        curr_dir = rel_path
-
-        parents = []
-        while is_pkg(join(basedir, curr_dir)):
-            parents.append(basename(curr_dir))
-
-            if path_sep not in curr_dir:
-                # We reached the rootdir
-                break
-
-            curr_dir = dirname(curr_dir)
-
-        return '.'.join(reversed(parents))
-
     pkgs = []
     for path, _, files in walk(rootdir):
         if '__init__.py' not in files:
             continue
 
         rel_path = relpath(path, basedir)
-        fullname = _get_package_full_name(rel_path)
+        fullname = _get_package_full_name(basedir, rel_path)
 
         pkgs.append(Package(
             fullname=fullname,
@@ -98,3 +83,19 @@ def get_packages(rootdir):
         ))
 
     return pkgs
+
+
+def _get_package_full_name(basedir, rel_path):
+    curr_dir = rel_path
+
+    parents = []
+    while is_pkg(join(basedir, curr_dir)):
+        parents.append(basename(curr_dir))
+
+        if path_sep not in curr_dir:
+            # We reached the rootdir
+            break
+
+        curr_dir = dirname(curr_dir)
+
+    return '.'.join(reversed(parents))
