@@ -62,11 +62,13 @@ def is_pkg(path):
 
 def get_packages(rootdir):
     """ Find all packages in the given root directory. """
+    basedir = dirname(rootdir)
+
     def _get_package_full_name(rel_path):
         curr_dir = rel_path
 
         parents = []
-        while is_pkg(join(rootdir, curr_dir)):
+        while is_pkg(join(basedir, curr_dir)):
             parents.append(basename(curr_dir))
 
             if path_sep not in curr_dir:
@@ -82,10 +84,11 @@ def get_packages(rootdir):
         if '__init__.py' not in files:
             continue
 
-        rel_path = relpath(path, rootdir)
+        rel_path = relpath(path, basedir)
+        fullname = _get_package_full_name(rel_path)
 
         pkgs.append(Package(
-            fullname=_get_package_full_name(rel_path),
+            fullname=fullname,
             path=path,
             relpath=rel_path,
             modules=[

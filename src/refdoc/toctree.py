@@ -23,7 +23,7 @@ class Toctree(object):
     def add(self, entry):
         """ Add entry to the TOC.
 
-        :param str entry:
+        :param str|unicode entry:
             This is a relative path to the ReST file. The function can
             correctly handle cases where the path is given with the ext or
             without (as Sphinx uses file names without the extension for

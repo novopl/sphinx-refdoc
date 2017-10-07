@@ -32,7 +32,7 @@ def gen_module_doc(fullname, toctree=None):
     In principle the module docfile contains one automodule directive for that
     module + optional toctree if provided.
 
-    :param str fullname:
+    :param str|unicode fullname:
         Full python name of the module.
     :param list<str> toctree:
         Inject this TOC tree into the module documentation.
@@ -55,21 +55,21 @@ def gen_pkg_reference(pkg, dist_dir):
     :param Package pkg:
         The named tuple containing package metadata. This is one of the items
         returned by the call to :py:func:`get_packages`.
-    :param str dist_dir:
+    :param str|unicode dist_dir:
         Destination directory.
     :return:
         Entry for the parent TOC (relative path without extension).
     """
-    pkgdoc = pkg.fullname.replace('.', '_')
-    pkgdoc_dir = join(dist_dir, pkgdoc)
+    pkg_doc = pkg.fullname.replace('.', '_')
+    pkg_doc_dir = join(dist_dir, pkg_doc)
 
-    if not exists(pkgdoc_dir):
-        makedirs(pkgdoc_dir)
+    if not exists(pkg_doc_dir):
+        makedirs(pkg_doc_dir)
 
     pkg_toc = Toctree()
     for module in pkg.modules:
         mod_name = pkg.fullname + '.' + module
-        mod_path = join(pkgdoc_dir, module + '.rst')
+        mod_path = join(pkg_doc_dir, module + '.rst')
 
         pkg_toc.add(module)
         write_file(mod_path, gen_module_doc(mod_name))
@@ -84,9 +84,9 @@ def gen_pkg_reference(pkg, dist_dir):
 def gen_reference_docs(src_dir, dst_dir):
     """ Generate sphinx source files for reference documentation and then.
 
-    :param str src_dir:
+    :param str|unicode src_dir:
         Path to the source code we want to generated reference for.
-    :param str dst_dir:
+    :param str|unicode dst_dir:
         Where the resulting files will be stored. If the
     """
     pkgs = get_packages(src_dir)
