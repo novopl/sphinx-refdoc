@@ -5,7 +5,7 @@ git helpers.
 from __future__ import absolute_import, unicode_literals
 from os import chmod
 
-from fabric.api import local
+from fabric.api import local, quiet
 
 from .common import _is_true, _repo_path, _sysmsg, _errmsg, _current_branch
 
@@ -44,7 +44,8 @@ def merged(release='no'):
     branch = _current_branch()
 
     try:
-        local('git rev-parse --verify {}'.format(branch))
+        with quiet():
+            local('git rev-parse --verify {}'.format(branch))
     except:
         _errmsg("Branch '{}' does not exist".format(branch))
 
