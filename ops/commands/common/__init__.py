@@ -18,6 +18,7 @@ from .project import _repo_path
 from .project import _inside_repo
 from .versioning import _bump_version
 from .versioning import _bump_version_file
+from .versioning import _get_current_version
 
 
 def _is_true(value):
