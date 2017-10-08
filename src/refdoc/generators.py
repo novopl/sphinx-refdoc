@@ -74,10 +74,10 @@ def gen_pkg_reference(pkg, dist_dir):
         pkg_toc.add(module)
         write_file(mod_path, gen_module_doc(mod_name))
 
-    index_file = join(pkgdoc_dir, 'index.rst')
+    index_file = join(pkg_doc_dir, 'index.rst')
     write_file(index_file, gen_module_doc(pkg.fullname, pkg_toc))
 
-    pkg_index_file = join(pkgdoc, 'index')
+    pkg_index_file = join(pkg_doc, 'index')
     return pkg_index_file
 
 
