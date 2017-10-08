@@ -2,7 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 import os
 from os.path import join
-from refdoc.models.package import Package
+from refdoc.objects import Package
 
 
 def test_collects_root_package():
@@ -28,9 +28,8 @@ def test_children_have_proper_names():
     names = frozenset((child.name for child in pkg.children))
     expected = frozenset((
         'cli',
-        'generators',
         'logic',
-        'models',
+        'objects',
         'rst',
         'toctree',
         'util'
@@ -46,9 +45,8 @@ def test_children_have_the_correct_rel_paths():
     rel_paths = frozenset((child.rel_path for child in pkg.children))
     expected = frozenset((
         'refdoc/cli.py',
-        'refdoc/generators.py',
         'refdoc/logic.py',
-        'refdoc/models',
+        'refdoc/objects',
         'refdoc/rst.py',
         'refdoc/toctree.py',
         'refdoc/util.py'
@@ -64,9 +62,8 @@ def test_children_have_proper_fullname():
     names = frozenset((child.fullname for child in pkg.children))
     expected = frozenset((
         'refdoc.cli',
-        'refdoc.generators',
         'refdoc.logic',
-        'refdoc.models',
+        'refdoc.objects',
         'refdoc.rst',
         'refdoc.toctree',
         'refdoc.util'
@@ -79,22 +76,22 @@ def test_can_get_child():
     pkg = Package.create('src/refdoc')
     pkg.collect_children(recursive=False)
 
-    models = pkg.get_child('models')
-    assert models is not None
-    assert models.fullname == 'refdoc.models'
+    objects = pkg.get_child('objects')
+    assert objects is not None
+    assert objects.fullname == 'refdoc.objects'
 
 
 def test_can_collect_recursively():
     pkg = Package.create('src/refdoc')
     pkg.collect_children(recursive=True)
 
-    models = pkg.get_child('models')
+    objects = pkg.get_child('objects')
 
-    names = frozenset((child.fullname for child in models.children))
+    names = frozenset((child.fullname for child in objects.children))
     expected = frozenset((
-        'refdoc.models.base',
-        'refdoc.models.module',
-        'refdoc.models.package',
+        'refdoc.objects.base',
+        'refdoc.objects.module',
+        'refdoc.objects.package',
     ))
 
     assert names == expected

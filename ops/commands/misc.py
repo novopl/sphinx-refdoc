@@ -9,8 +9,7 @@ from os.path import exists
 from shutil import rmtree
 
 from fabric.api import local, lcd, shell_env
-from refdoc import gen_reference_docs
-from refdoc.logic import generate_docs
+from refdoc import generate_docs
 
 from .common import _repo_path, _rm_glob, _sysmsg, _is_true
 

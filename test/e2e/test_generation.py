@@ -4,7 +4,7 @@ import os
 from os.path import exists, join
 from shutil import rmtree
 from tempfile import mkdtemp
-from refdoc.logic import generate_docs
+from refdoc import generate_docs
 import pytest
 
 
@@ -32,9 +32,8 @@ def test_all_refdoc_submodules_exist(tempdir):
     results = frozenset([f for f in files if f != 'index.rst'])
     expected = frozenset((
         'cli.rst',
-        'generators.rst',
         'logic.rst',
-        'models',
+        'objects',
         'rst.rst',
         'toctree.rst',
         'util.rst'
