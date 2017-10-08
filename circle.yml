@@ -18,7 +18,7 @@ dependencies:
     - ./.tox/py36
 
   override:
-    - pip install Fabric3 tox
+    - pip install -r requirements.txt -r devrequirements.txt
     - tox --notest  # Install all the envs so they get cached
 
 
