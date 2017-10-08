@@ -85,7 +85,7 @@ def _bump_version_file(version_file, component='patch'):
     with open(version_file) as fp:
         old_ver = fp.read().strip()
 
-    new_ver = bump_version(old_ver, component)
+    new_ver = _bump_version(old_ver, component)
 
     with open(version_file, 'w') as fp:
         fp.write(new_ver)
