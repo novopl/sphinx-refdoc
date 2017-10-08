@@ -1,14 +1,20 @@
 # -*- coding: utf-8 -*-
+""" Base class for both Module and Package.
+
+Contains shared functionality.
+"""
 from __future__ import absolute_import, unicode_literals
 
-from os.path import basename, dirname, join, relpath, sep as path_sep
+from os.path import basename, dirname, relpath, sep as path_sep
 
 import attr
 
 
 @attr.s
-class PyObjectBase(object):
-    """
+class DocObjBase(object):
+    """ Base python object.
+
+    This contains the shared code between Modules and Packages.
 
     :var path:      Path to the package.
     :var name:      Package name.
@@ -22,15 +28,27 @@ class PyObjectBase(object):
 
     @property
     def type(self):
-        raise NotImplementedError("{} should implement .type()".format(
+        """ The type of the object.
+
+        Each derived class has to implement this property.
+        """
+        raise NotImplementedError("{} must implement .type()".format(
             self.__class__.__name__
         ))
 
     def to_rst(self):
+        """ Convert the objec to reStructuredText.
+
+        Each derived class has to implement this method.
+        """
         raise NotImplementedError("Models must implement .to_rst()")
 
     @property
     def base_path(self):
+        """ Return the module/package base path.
+
+        This is the base used for generating module/package names.
+        """
         if self.owner:
             return self.owner.base_path
         else:
@@ -50,4 +68,5 @@ class PyObjectBase(object):
 
     @property
     def rel_path(self):
+        """ The path relative to the base_path. """
         return relpath(self.path, self.base_path)

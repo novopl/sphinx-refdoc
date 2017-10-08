@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+Python package encapsulation
+"""
 from __future__ import absolute_import, unicode_literals
 import os
 from os.path import abspath
@@ -13,11 +16,11 @@ import attr
 from .. import rst
 from ..toctree import Toctree
 from .module import Module
-from .base import PyObjectBase
+from .base import DocObjBase
 
 
 @attr.s
-class Package(PyObjectBase):
+class Package(DocObjBase):
     """
     Represents a python package. This is all the information needed to generate
     the documentation for the given package.
@@ -26,6 +29,16 @@ class Package(PyObjectBase):
 
     @classmethod
     def create(cls, path, owner=None):
+        """
+        Create a new package from the given path.
+
+        :param str|unicode path:
+            Path to the python package directory.
+        :param Package owner:
+            The package owner. This is the package this package belongs to.
+        :return Module:
+            Newly created Package instance.
+        """
         if not Package.is_pkg(path):
             raise ValueError('{} is not a package'.format(path))
 
@@ -54,9 +67,11 @@ class Package(PyObjectBase):
 
     @property
     def type(self):
+        """ Hard override of the base .type property. """
         return 'package'
 
     def __str__(self):
+        """ Return the package fullname as it's string representation. """
         return self.fullname
 
     def get_relative_name(self, obj):

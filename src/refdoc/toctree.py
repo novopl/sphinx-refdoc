@@ -3,8 +3,6 @@
 Sphinx toctree directive generator.
 """
 from __future__ import absolute_import
-import itertools
-
 from os.path import splitext
 
 import attr
@@ -50,10 +48,10 @@ class Toctree(object):
         if self.hidden:
             rst_src.append('    :hidden:')
 
-        rst_src += itertools.chain(
-            [''],
-            ['    ' + e for e in self.entries],
-            ['']
-        )
+        if self.entries:
+            rst_src.append('')
+            rst_src += ['    ' + e for e in self.entries]
+
+        rst_src.append('')
 
         return '\n'.join(rst_src)
