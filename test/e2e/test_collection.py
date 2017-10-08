@@ -4,6 +4,7 @@ import os
 from os.path import join
 from refdoc.objects import Module, Package
 
+
 def _get_lib_package_content(path):
     def is_child(file):
         child_path = join(path, file)
