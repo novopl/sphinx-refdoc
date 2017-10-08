@@ -5,7 +5,30 @@ Helper commands for releasing to pypi.
 from __future__ import absolute_import, unicode_literals
 from fabric.api import local
 
-from .common import _bump_version_file, _inside_repo, _repo_path, _sysmsg
+from .common import _bump_version_file
+from .common import _get_current_version
+from .common import _inside_repo
+from .common import _repo_path
+from .common import _sysmsg
+
+
+def version():
+    """ Return current project version. """
+    ver = _get_current_version()
+
+    _sysmsg("Version: ^35{}".format(ver))
+
+
+def bump_version(component='patch'):
+    """ Bump current project version without committing anything.
+
+    No tags are created either.
+    """
+    _sysmsg("Bumping package version")
+    old_ver, new_ver = _bump_version_file(_repo_path('VERSION'), component)
+
+    _sysmsg("  old version: ^35{}".format(old_ver))
+    _sysmsg("  new version: ^35{}".format(new_ver))
 
 
 def make_release(component='patch'):
@@ -31,7 +54,7 @@ def make_release(component='patch'):
     _sysmsg("Creating commit that marks the release")
     with _inside_repo(quiet=True):
         local('git add VERSION && git commit -m "Release: v{}"'.format(new_ver))
-        local('git tag -a "{ver}" -m "Mark {ver} release"'.format(ver=new_ver))
+        local('git tag -a "v{}" -m "Mark v{} release"'.format(new_ver))
 
 
 def upload(target='local'):

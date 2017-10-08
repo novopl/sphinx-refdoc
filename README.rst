@@ -20,7 +20,7 @@ Usage
 
 .. code-block:: shell
 
-    $ sphinx-refdoc <src_dir> <out_dir>
+    $ sphinx-refdoc -i <src_pkg_1> -i <src_pkg_2> -o <out_dir>
 
 ``sphinx-refdoc`` will parse you're source tree passed as the first parameter.
 It will then generate a stub for sphinx reference documentation for that source.
@@ -64,10 +64,4 @@ Setting up development repo
     $ cd sphinx-refdoc
     $ virtualenv env
     $ source ./env/bin/activate
-    $ ./devinit.sh
-
-
-.. toctree::
-    :maxdepth: 3
-
-    docs/ref/index
+    $ pip install -r requirements.txt -r devrequirements.txt

@@ -5,10 +5,13 @@ much easier.
 
 .. autofunction:: _bump_version
 .. autofunction:: _bump_version_file
+.. autofunction:: _get_current_version
 """
 from __future__ import absolute_import
 import re
 from os.path import exists
+
+from .project import _repo_path
 
 
 # MAJOR.MINOR[.PATCH[-BUILD]]
@@ -19,6 +22,28 @@ RE_VERSION = re.compile(
     r'(\.(?P<patch>\d+))?'
     r'$'
 )
+
+
+def _get_current_version(version_file=None):
+    """ Return the current project version read from *version_file*.
+
+    :param {str|unicode} version_file:
+        Path to the file storing the current version. If not given, it will
+        look for file called VERSION in the project root directory.
+    :return str|unicode:
+        The current project version in MAJOR.MINOR.PATCH format. PATCH might be
+        omitted if it's 0, so 1.0.0 becomes 1.0 and 0.1.0 becomes 0.1.
+    """
+    if version_file is None:
+        version_file = _repo_path('VERSION')
+
+    if not exists(version_file):
+        raise ValueError("Version file '{}' file for does not exist.".format(
+            version_file
+        ))
+
+    with open(version_file) as fp:
+        return fp.read().strip()
 
 
 def _bump_version(version, component='patch'):
@@ -79,11 +104,7 @@ def _bump_version_file(version_file, component='patch'):
     :param {str|unicode} component:
         Version component to bump. Same as in `bump_version`.
     """
-    if not exists(version_file):
-        raise ValueError("VERSION file for does not exist")
-
-    with open(version_file) as fp:
-        old_ver = fp.read().strip()
+    old_ver = _get_current_version(version_file)
 
     new_ver = _bump_version(old_ver, component)
 
