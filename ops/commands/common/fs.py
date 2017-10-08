@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 File system related helpers.
+
+.. autofunction:: _surround_paths_with_quotes
+.. autofunction:: _rm_glob
 """
 from __future__ import absolute_import, unicode_literals
 from os import remove

@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 Helpers for nice shell output formatting.
+
+.. autofunction:: _cstr
+.. autofunction:: _sysmsg
+.. autofunction:: _errmsg
 """
 from __future__ import absolute_import, unicode_literals
 import re

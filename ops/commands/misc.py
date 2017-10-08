@@ -10,6 +10,7 @@ from shutil import rmtree
 
 from fabric.api import local, lcd, shell_env
 from refdoc import gen_reference_docs
+from refdoc.logic import generate_docs
 
 from .common import _repo_path, _rm_glob, _sysmsg, _is_true
 
@@ -20,6 +21,10 @@ DOCS_PATH = _repo_path('docs')
 BUILD_PATH = _repo_path('.build/docs')
 OUT_PATH = _repo_path('docs/html')
 REF_DOCS_PATH = _repo_path('docs/ref')
+PKG_PATHS = [
+    _repo_path('src/refdoc'),
+    _repo_path('ops/commands'),
+]
 
 
 def clean():
@@ -48,16 +53,16 @@ def docs(recreate='no'):
         _sysmsg("^91Deleting ^94{}".format(OUT_PATH))
         rmtree(OUT_PATH)
 
-    _sysmsg('Generating reference documentation')
-    gen_reference_docs(
-        [
-            SRC_PATH,
-            _repo_path('ops/commands')
-        ],
-        dst_dir=REF_DOCS_PATH
-    )
+    _sysmsg('Removing previously generated reference documentation')
+    if exists(REF_DOCS_PATH):
+        rmtree(REF_DOCS_PATH)
 
-    with shell_env(PYTHONPATH=SRC_PATH):
+    os.makedirs(REF_DOCS_PATH)
+
+    _sysmsg('Generating reference documentation')
+    generate_docs(PKG_PATHS, out_dir=REF_DOCS_PATH)
+
+    with shell_env(PYTHONPATH='.:{}'.format(SRC_PATH)):
         with lcd(DOCS_PATH):
             _sysmsg('Building docs with ^35sphinx')
             local('sphinx-build -b html -d {build} {docs} {out}'.format(

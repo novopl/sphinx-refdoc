@@ -2,6 +2,9 @@
 """
 Functionality related to versioning. This makes project version management
 much easier.
+
+.. autofunction:: _bump_version
+.. autofunction:: _bump_version_file
 """
 from __future__ import absolute_import
 import re

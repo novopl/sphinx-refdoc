@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 Project related helpers.
+
+.. autofunction:: _current_branch
+.. autofunction:: _repo_path
+.. autofunction:: _inside_repo
 """
 from __future__ import absolute_import, unicode_literals
 

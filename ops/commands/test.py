@@ -65,6 +65,13 @@ def unittest(**opts):
         _run_tests(['test/unit'], **opts)
 
 
+def e2etest(**opts):
+    """ Run unit tests against the current python version. """
+    _sysmsg("Running e2e tests")
+    with lcd(_repo_path('.')):
+        _run_tests(['test/e2e'], **opts)
+
+
 def apitest(**opts):
     """ Run API tests against the current python version. """
     _sysmsg("Running api tests")

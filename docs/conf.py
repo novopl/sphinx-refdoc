@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 
 
 project = u"sphinx-refdoc"
@@ -15,6 +16,8 @@ def repo_path(path):
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+sys.path.insert(0, repo_path('src'))
+sys.path.insert(1, repo_path('.'))
 
 extensions = [
     'sphinx.ext.autodoc',
