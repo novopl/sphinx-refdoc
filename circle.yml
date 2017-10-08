@@ -12,7 +12,6 @@ dependencies:
     - /opt/circleci/python
     - ./.tox/py27
     - ./.tox/py33
-    - ./.tox/py34
     - ./.tox/py35
     - ./.tox/py36
 
