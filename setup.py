@@ -22,7 +22,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'sphinx-refdoc = refdoc.cli:gendocs',
+            'sphinx-refdoc = refdoc.cli:docs',
         ]
     },
     classifiers=[

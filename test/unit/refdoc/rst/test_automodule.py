@@ -4,9 +4,12 @@ from refdoc import rst
 
 
 def test_generates_proper_directive():
-    assert rst.automodule('test.module') == '\n'.join([
+    result = rst.automodule('test.module')
+    expected = '\n'.join([
         '',
         '.. automodule:: test.module',
         '    :members:',
         '',
     ])
+
+    assert result == expected
