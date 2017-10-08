@@ -11,7 +11,7 @@ from shutil import rmtree
 from fabric.api import local, lcd, shell_env
 from refdoc import generate_docs
 
-from .common import _repo_path, _rm_glob, _sysmsg, _is_true
+from .common import _repo_path, _sysmsg, _is_true
 
 
 ASSETS_PATH = _repo_path('docs/assets')
@@ -24,22 +24,6 @@ PKG_PATHS = [
     _repo_path('src/refdoc'),
     _repo_path('ops/commands'),
 ]
-
-
-def clean():
-    """ Remove temporary files like python cache, swap files, etc. """
-    patterns = [
-        '__pycache__',
-        '*.pyc',
-        '*.pyo',
-        '*.pyd',
-        '.swp',
-    ]
-
-    os.chdir(_repo_path('.'))
-
-    for pattern in patterns:
-        _rm_glob(pattern)
 
 
 def docs(recreate='no'):
