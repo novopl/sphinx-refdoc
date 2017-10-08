@@ -16,7 +16,7 @@ dependencies:
     - ./.tox/py36
 
   override:
-    - pip install -r requirements.txt -r devrequirements.txt
+    - pip install Fabric3 tox
     - tox --notest  # Install all the envs so they get cached
 
 
@@ -24,7 +24,7 @@ test:
   override:
     - fab lint
     - fab testall
-    - fab gendocs
+    - fab docs
     - mv ./docs/html ./local/dist/docs
     - cp ./local/dist/test-results.xml $CIRCLE_TEST_REPORTS/
 
