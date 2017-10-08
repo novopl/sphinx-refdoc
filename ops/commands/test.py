@@ -10,10 +10,10 @@ from .common import _is_true, _repo_path, _sysmsg, _surround_paths_with_quotes
 
 def _run_tests(paths, **opts):
     args = []
-    sugar = _is_true(opts.get(b'sugar', 'on'))
-    junit = _is_true(opts.get(b'junit', 'off'))
-    verbose = _is_true(opts.get(b'verbose', 'off'))
-    coverage = _is_true(opts.get(b'coverage', 'on'))
+    sugar = _is_true(opts.get('sugar', 'on'))
+    junit = _is_true(opts.get('junit', 'off'))
+    verbose = int(opts.get('verbose', '0'))
+    coverage = _is_true(opts.get('coverage', 'on'))
 
     if coverage:
         args += [
@@ -29,8 +29,12 @@ def _run_tests(paths, **opts):
     if not sugar:
         args += ['-p no:sugar']
 
-    if verbose:
-        args += ['-v', '-l', '--full-trace']
+    if verbose >= 1:
+        args += ['-v']
+    if verbose >= 2:
+        args += ['-l']
+    if verbose >= 3:
+        args += ['--full-trace']
 
     with shell_env(PYTHONPATH=_repo_path('src')):
         local('pytest -c {conf} {args} {paths}'.format(
