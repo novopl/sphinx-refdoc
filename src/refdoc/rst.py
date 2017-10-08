@@ -70,6 +70,7 @@ def automodule(name, members=True):
         :members:
     <BLANKLINE>
     '''
+
     """
     lines = [
         '',
@@ -90,15 +91,21 @@ def autosummary(names):
     >>> autosummary(['my.test.module', 'my.test.module2'])
     '''
     .. autosummary::
+
         my.test.module1
         my.test.module2
+
     <BLANKLINE>
     '''
+
     """
-    lines = [
-        '',
-        '.. autosummary::',
-    ]
-    lines += ['    {}'.format(name) for name in names]
-    lines.append('')
+    lines = itertools.chain(
+        [
+            '',
+            '.. autosummary::',
+            ''
+        ],
+        ['    {}'.format(name) for name in names],
+        ['']
+    )
     return '\n'.join(lines)
