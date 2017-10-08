@@ -4,8 +4,8 @@ machine:
     - pyenv install --skip-existing 3.3.6
     - pyenv install --skip-existing 3.4.5
     - pyenv install --skip-existing 3.5.2
-    - pyenv install --skip-existing 3.6.0
-    - pyenv global 2.7.10 3.3.6 3.4.5 3.5.2 3.6.0
+    - pyenv install --skip-existing 3.6.2
+    - pyenv global 2.7.12 3.3.6 3.4.5 3.5.2 3.6.2
 
 
 dependencies:
@@ -18,7 +18,7 @@ dependencies:
     - ./.tox/py36
 
   override:
-    - ./devinit.sh
+    - pip install -r requirements.txt -r devrequirements.txt
     - tox --notest  # Install all the envs so they get cached
 
 
@@ -26,9 +26,9 @@ test:
   override:
     - fab lint
     - fab testall
-    - fab gendocs
-    - mv ./docs/html ./local/dist/docs
-    - cp ./local/dist/test-results.xml $CIRCLE_TEST_REPORTS/
+    - fab docs
 
   post:
-    - mv local/dist/** "$CIRCLE_ARTIFACTS/"
+    - mv docs/html .build/docs
+    - cp .build/test-results.xml $CIRCLE_TEST_REPORTS/
+    - mv .build/** "$CIRCLE_ARTIFACTS/"

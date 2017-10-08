@@ -3,9 +3,9 @@
 This module implements python reference documentation generator for sphinx.
 """
 from __future__ import absolute_import
-from .generators import gen_reference_docs
+from .logic import generate_docs
 
 
 __all__ = [
-    'gen_reference_docs'
+    'generate_docs'
 ]
