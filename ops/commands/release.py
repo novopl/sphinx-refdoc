@@ -8,7 +8,7 @@ from fabric.api import local
 from .common import _bump_version_file, _inside_repo, _repo_path, _sysmsg
 
 
-def release(component='patch', target='local'):
+def make_release(component='patch'):
     """ Release a new version of the project.
 
     This will bump the version number (patch component by default) + add and tag
@@ -33,11 +33,6 @@ def release(component='patch', target='local'):
         local('git add VERSION && git commit -m "Release: v{}"'.format(new_ver))
         local('git tag -a "{ver}" -m "Mark {ver} release"'.format(ver=new_ver))
 
-    _sysmsg("Uploading to pypi server ^33{}".format(target))
-    with _inside_repo(quiet=True):
-        local('python setup.py sdist register -r "{}"'.format(target))
-        local('python setup.py sdist upload -r "{}"'.format(target))
-
 
 def upload(target='local'):
     """ Release to a given pypi server ('local' by default). """
@@ -45,3 +40,13 @@ def upload(target='local'):
     with _inside_repo(quiet=True):
         local('python setup.py sdist register -r "{}"'.format(target))
         local('python setup.py sdist upload -r "{}"'.format(target))
+
+
+def release(component='patch', target='local'):
+    """ Release a new version of the project.
+
+    This will bump the version number (patch component by default) + add and tag
+    a commit with that change. Finally it will upload the package to pypi.
+    """
+    make_release(component)
+    upload(target)
