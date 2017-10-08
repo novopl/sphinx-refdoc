@@ -22,7 +22,6 @@ dependencies:
 
 test:
   override:
-    - makedir -p .build
     - fab lint
     - fab testall
     - fab docs
