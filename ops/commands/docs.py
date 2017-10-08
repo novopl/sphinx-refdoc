@@ -11,7 +11,7 @@ from shutil import rmtree
 from fabric.api import local, lcd, shell_env
 from refdoc import generate_docs
 
-from .common import _repo_path, _rm_glob, _sysmsg, _is_true
+from .common import _repo_path, _sysmsg, _is_true
 
 
 ASSETS_PATH = _repo_path('docs/assets')
@@ -24,22 +24,6 @@ PKG_PATHS = [
     _repo_path('src/refdoc'),
     _repo_path('ops/commands'),
 ]
-
-
-def clean():
-    """ Remove temporary files like python cache, swap files, etc. """
-    patterns = [
-        '__pycache__',
-        '*.pyc',
-        '*.pyo',
-        '*.pyd',
-        '.swp',
-    ]
-
-    os.chdir(_repo_path('.'))
-
-    for pattern in patterns:
-        _rm_glob(pattern)
 
 
 def docs(recreate='no'):
@@ -64,6 +48,10 @@ def docs(recreate='no'):
     with shell_env(PYTHONPATH='.:{}'.format(SRC_PATH)):
         with lcd(DOCS_PATH):
             _sysmsg('Building docs with ^35sphinx')
+            _sysmsg('   build dir:  ^33'.format(BUILD_PATH))
+            _sysmsg('   docs src:   ^33'.format(DOCS_PATH))
+            _sysmsg('   out:        ^33'.format(OUT_PATH))
+
             local('sphinx-build -b html -d {build} {docs} {out}'.format(
                 build=BUILD_PATH,
                 docs=DOCS_PATH,

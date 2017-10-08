@@ -37,7 +37,7 @@ def make_release(component='patch'):
 def upload(target='local'):
     """ Release to a given pypi server ('local' by default). """
     _sysmsg("Uploading to pypi server ^33{}".format(target))
-    with _inside_repo(quiet=True):
+    with _inside_repo(quiet=False):
         local('python setup.py sdist register -r "{}"'.format(target))
         local('python setup.py sdist upload -r "{}"'.format(target))
 
