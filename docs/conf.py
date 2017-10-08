@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import sphinx_rtd_theme
 
 
 project = u"sphinx-refdoc"
@@ -48,7 +49,8 @@ todo_include_todos = False
 intersphinx_mapping = {'https://docs.python.org/': None}
 
 pygments_style = 'monokai'
-html_theme = 'bizstyle'
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+html_theme = "sphinx_rtd_theme"
 html_static_path = [repo_path('docs/assets')]
 htmlhelp_basename = 'sphinxrefdoc'
 
