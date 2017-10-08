@@ -77,6 +77,8 @@ def automodule(name, members=True):
     ]
     if members:
         lines.append('    :members:')
+
+    lines.append('')
     return '\n'.join(lines)
 
 
