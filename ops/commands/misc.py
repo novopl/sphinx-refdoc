@@ -64,6 +64,10 @@ def docs(recreate='no'):
     with shell_env(PYTHONPATH='.:{}'.format(SRC_PATH)):
         with lcd(DOCS_PATH):
             _sysmsg('Building docs with ^35sphinx')
+            _sysmsg('   build dir:  ^33'.format(BUILD_PATH))
+            _sysmsg('   docs src:   ^33'.format(DOCS_PATH))
+            _sysmsg('   out:        ^33'.format(OUT_PATH))
+
             local('sphinx-build -b html -d {build} {docs} {out}'.format(
                 build=BUILD_PATH,
                 docs=DOCS_PATH,

@@ -22,11 +22,12 @@ dependencies:
 
 test:
   override:
+    - makedir -p .build
     - fab lint
     - fab testall
     - fab docs
-    - mv ./docs/html ./build/docs
-    - cp ./build/test-results.xml $CIRCLE_TEST_REPORTS/
+    - mv docs/html .build/docs
+    - cp .build/test-results.xml $CIRCLE_TEST_REPORTS/
 
   post:
-    - mv local/dist/** "$CIRCLE_ARTIFACTS/"
+    - mv .build/** "$CIRCLE_ARTIFACTS/"
