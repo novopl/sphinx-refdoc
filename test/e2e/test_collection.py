@@ -2,7 +2,14 @@
 from __future__ import absolute_import, unicode_literals
 import os
 from os.path import join
-from refdoc.objects import Package
+from refdoc.objects import Module, Package
+
+def _get_lib_package_content(path):
+    def is_child(file):
+        child_path = join(path, file)
+        return Module.is_module(child_path) or Package.is_pkg(child_path)
+
+    return [f for f in os.listdir(path) if is_child(f)]
 
 
 def test_collects_root_package():
@@ -17,8 +24,9 @@ def test_finds_all_children():
     pkg = Package.create('src/refdoc')
     pkg.collect_children(recursive=False)
 
-    files = [f for f in os.listdir('src/refdoc') if not f.startswith('__')]
-    assert len(pkg.children) == (len(files))
+    files = _get_lib_package_content('src/refdoc')
+    children = [p.fullname for p in pkg.children]
+    assert len(children) == (len(files))
 
 
 def test_children_have_proper_names():

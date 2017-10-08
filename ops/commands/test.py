@@ -13,6 +13,7 @@ def _run_tests(paths, **opts):
     sugar = _is_true(opts.get('sugar', 'on'))
     junit = _is_true(opts.get('junit', 'off'))
     verbose = int(opts.get('verbose', '0'))
+    show_locals = _is_true(opts.get('locals', 'on'))
     coverage = _is_true(opts.get('coverage', 'on'))
 
     if coverage:
@@ -32,9 +33,10 @@ def _run_tests(paths, **opts):
     if verbose >= 1:
         args += ['-v']
     if verbose >= 2:
-        args += ['-l']
-    if verbose >= 3:
         args += ['--full-trace']
+
+    if show_locals:
+        args += ['-l']
 
     with shell_env(PYTHONPATH=_repo_path('src')):
         local('pytest -c {conf} {args} {paths}'.format(
@@ -44,11 +46,16 @@ def _run_tests(paths, **opts):
         ))
 
 
-def testall():
+def testall(envs=None):
     """ Run tests against all supported python versions using tox. """
     _sysmsg("Running tests against all supported python versions using ^35tox")
     with lcd(_repo_path('.')):
-        local('tox')
+        args = []
+        if envs is not None:
+            env_list = ','.join(envs.split(';'))
+            args.append('-e {}'.format(env_list))
+
+        local('tox {}'.format(' '.join(args)))
 
 
 def test(**opts):

@@ -25,8 +25,8 @@ test:
     - fab lint
     - fab testall
     - fab docs
-    - mv ./docs/html ./local/dist/docs
-    - cp ./local/dist/test-results.xml $CIRCLE_TEST_REPORTS/
+    - mv ./docs/html ./build/docs
+    - cp ./build/test-results.xml $CIRCLE_TEST_REPORTS/
 
   post:
     - mv local/dist/** "$CIRCLE_ARTIFACTS/"
