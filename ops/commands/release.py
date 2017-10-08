@@ -51,10 +51,12 @@ def make_release(component='patch'):
     _sysmsg("  old version: ^35{}".format(old_ver))
     _sysmsg("  new version: ^35{}".format(new_ver))
 
-    _sysmsg("Creating commit that marks the release")
     with _inside_repo(quiet=True):
+        _sysmsg("Creating commit for the release")
         local('git add VERSION && git commit -m "Release: v{}"'.format(new_ver))
-        local('git tag -a "v{}" -m "Mark v{} release"'.format(new_ver))
+
+        _sysmsg("Creating tag that marks the release")
+        local('git tag -a "v{0}" -m "Mark v{0} release"'.format(new_ver))
 
 
 def upload(target='local'):
