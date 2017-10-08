@@ -14,23 +14,6 @@ class Module(PyObjectBase):
     Represents a python module. This is all the information needed to generate
     the documentation for the given module.
     """
-    @property
-    def type(self):
-        return 'module'
-
-    def to_rst(self):
-        doc_src = rst.title('``{}``'.format(self.fullname))
-        doc_src += rst.automodule(self.fullname)
-
-        return doc_src
-
-    def __str__(self):
-        return self.fullname
-
-    @classmethod
-    def is_module(cls, path):
-        return path.endswith('.py') and basename(path) != '__init__.py'
-
     @classmethod
     def create(cls, path, owner=None):
         if not Module.is_module(path):
@@ -48,3 +31,20 @@ class Module(PyObjectBase):
             mod.fullname = owner.get_relative_name(mod)
 
         return mod
+
+    @classmethod
+    def is_module(cls, path):
+        return path.endswith('.py') and basename(path) != '__init__.py'
+
+    @property
+    def type(self):
+        return 'module'
+
+    def to_rst(self):
+        doc_src = rst.title('``{}``'.format(self.fullname))
+        doc_src += rst.automodule(self.fullname)
+
+        return doc_src
+
+    def __str__(self):
+        return self.fullname

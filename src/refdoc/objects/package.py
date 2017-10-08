@@ -16,7 +16,6 @@ from .module import Module
 from .base import PyObjectBase
 
 
-
 @attr.s
 class Package(PyObjectBase):
     """
@@ -25,29 +24,37 @@ class Package(PyObjectBase):
     """
     children = attr.ib(default=[])
 
+    @classmethod
+    def create(cls, path, owner=None):
+        if not Package.is_pkg(path):
+            raise ValueError('{} is not a package'.format(path))
+
+        if owner is None:
+            # Try detecting enclosing package
+            if Package.is_pkg(join(path, '..')):
+                owner = Package.create(join(path, '..'))
+
+        name = basename(path)
+        pkg = Package(
+            path=abspath(path),
+            name=name,
+            fullname=name,
+            owner=owner,
+        )
+
+        if owner is not None:
+            pkg.fullname = owner.get_relative_name(pkg)
+
+        return pkg
+
+    @classmethod
+    def is_pkg(cls, path):
+        """ Return ``True`` if the given path is a python package. """
+        return exists(join(path, '__init__.py'))
+
     @property
     def type(self):
         return 'package'
-
-    def to_rst(self):
-        """ Return reST markdown to use for this package documentation. """
-        # index_src = gen_module_doc(pkg.fullname, pkg_toc)
-        rst_src = rst.title('``{}``'.format(self.fullname))
-        rst_src += rst.autosummary([
-            '{}'.format(m.fullname) for m in self.children
-        ])
-        rst_src += rst.automodule(self.fullname, members=False)
-
-        toc = Toctree(hidden=True)
-        for child in self.children:
-            if child.type == 'package':
-                toc.add(child.name + '/index')
-            elif child.type == 'module':
-                toc.add(child.name)
-
-        rst_src += str(toc)
-
-        return rst_src
 
     def __str__(self):
         return self.fullname
@@ -114,30 +121,21 @@ class Package(PyObjectBase):
 
             self.children.append(child)
 
-    @classmethod
-    def create(cls, path, owner=None):
-        if not Package.is_pkg(path):
-            raise ValueError('{} is not a package'.format(path))
+    def to_rst(self):
+        """ Return reST markdown to use for this package documentation. """
+        rst_src = rst.title('``{}``'.format(self.fullname))
+        rst_src += rst.autosummary([
+            '{}'.format(m.fullname) for m in self.children
+        ])
+        rst_src += rst.automodule(self.fullname, members=False)
 
-        if owner is None:
-            # Try detecting enclosing package
-            if Package.is_pkg(join(path, '..')):
-                owner = Package.create(join(path, '..'))
+        toc = Toctree(hidden=True)
+        for child in self.children:
+            if child.type == 'package':
+                toc.add(child.name + '/index')
+            elif child.type == 'module':
+                toc.add(child.name)
 
-        name = basename(path)
-        pkg = Package(
-            path=abspath(path),
-            name=name,
-            fullname=name,
-            owner=owner,
-        )
+        rst_src += str(toc)
 
-        if owner is not None:
-            pkg.fullname = owner.get_relative_name(pkg)
-
-        return pkg
-
-    @classmethod
-    def is_pkg(cls, path):
-        """ Return ``True`` if the given path is a python package. """
-        return exists(join(path, '__init__.py'))
+        return rst_src
