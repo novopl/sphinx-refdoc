@@ -32,9 +32,9 @@ def generate_root_index_rst(packages):
         rst.title('Reference documentation'),
         '',
         '.. ref_toc_inclusion_marker',
-        ''
+        '',
+        str(toc)
     ]
-    src += str(toc)
 
     return '\n'.join(src)
 
