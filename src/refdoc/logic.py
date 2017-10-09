@@ -28,10 +28,15 @@ def generate_root_index_rst(packages):
     for pkg in packages:
         toc.add(join(pkg.name + '/index.rst'))
 
-    src = rst.title('Reference documentation')
+    src = [
+        rst.title('Reference documentation'),
+        '',
+        '.. ref_toc_inclusion_marker',
+        ''
+    ]
     src += str(toc)
 
-    return src
+    return '\n'.join(src)
 
 
 def generate_pkg_docs(pkg, out_dir):
