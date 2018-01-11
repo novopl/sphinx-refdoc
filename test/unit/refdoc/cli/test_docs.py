@@ -12,4 +12,4 @@ def test_uses_gen_reference_docs(generate_docs):
     result = runner.invoke(docs, ['-isrc', '-odst'])
 
     assert result.exit_code == 0
-    generate_docs.assert_called_once_with(('src',), 'dst')
+    generate_docs.assert_called_once_with(('src',), 'dst', False)
