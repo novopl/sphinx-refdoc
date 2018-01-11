@@ -11,12 +11,13 @@ from .objects import Package
 from .toctree import Toctree
 
 
-def generate_docs(pkg_paths, out_dir):
+def generate_docs(pkg_paths, out_dir, no_index=False):
     """ Generate documentation for the given package list. """
     pkgs = [Package.create(p) for p in pkg_paths]
 
-    with open(join(out_dir, 'index.rst'), 'w') as fp:
-        fp.write(generate_root_index_rst(pkgs))
+    if not no_index:
+        with open(join(out_dir, 'index.rst'), 'w') as fp:
+            fp.write(generate_root_index_rst(pkgs))
 
     for pkg in pkgs:
         generate_pkg_docs(pkg, out_dir)

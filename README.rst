@@ -6,6 +6,7 @@ About
 
 **sphinx-refdoc** is a python reference documentation generator for Sphinx.
 
+.. readme_inclusion_marker
 
 Installation
 ============
