@@ -50,13 +50,14 @@ def _find_proj_root():
 
     log.info('Finding project root', curr)
     while curr.startswith('/') and len(curr) > 1:
-        log.info('  checking {}', curr)
+        log.info('  checking ^94{}', curr)
         if 'fabfile.py' in listdir(curr):
+            log.info('  ^32Found')
             return curr
         else:
             curr = normpath(join(curr, '..'))
 
-    log.info('  Not found {}', curr)
+    log.info('  ^31Not found')
 
 
 def get(name, *default):
