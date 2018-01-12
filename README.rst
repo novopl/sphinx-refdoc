@@ -65,4 +65,4 @@ Setting up development repo
     $ cd sphinx-refdoc
     $ virtualenv env
     $ source ./env/bin/activate
-    $ pip install -r requirements.txt -r devrequirements.txt
+    $ pip install -r requirements.txt -r ops/devrequirements.txt
