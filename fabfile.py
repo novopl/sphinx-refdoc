@@ -6,7 +6,7 @@ from __future__ import absolute_import
 
 
 # Configure the build
-from ops.commands.common import conf
+from fabops.commands.common import conf
 conf.init({
     'SRC_DIR': 'src',
     'SRC_PATH': 'src/refdoc',
@@ -17,7 +17,6 @@ conf.init({
     ],
     'REFDOC_PATHS': [
         'src/refdoc',
-        'env/lib/python3.6/site-packages/fabops/commands'
     ],
     'TEST_TYPES': {
         'default': {'paths': ['test']}
@@ -26,11 +25,11 @@ conf.init({
 
 
 # Import all commands
-from ops.commands.clean import *
-from ops.commands.docs import *
-from ops.commands.release import *
-from ops.commands.frontend import *
-from ops.commands.git import *
-from ops.commands.lint import *
-from ops.commands.ops import *
-from ops.commands.test import *
+from fabops.commands.clean import *
+from fabops.commands.docs import *
+from fabops.commands.release import *
+from fabops.commands.frontend import *
+from fabops.commands.git import *
+from fabops.commands.lint import *
+from fabops.commands.ops import *
+from fabops.commands.test import *
