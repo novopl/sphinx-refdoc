@@ -38,7 +38,7 @@ jobs:
       - checkout
       - restore_cache:
           key: deps-rev1-{{ checksum "requirements.txt" }}
-      - run: scaffy setup.py develop
+      - run: python setup.py develop
       - run: peltak release gen-pypirc
       - run: peltak release upload pypi
       - run: rm ~/.pypirc
