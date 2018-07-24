@@ -11,7 +11,7 @@ conf.init({
     'SRC_DIR': 'src',
     'SRC_PATH': 'src/refdoc',
     'BUILD_DIR': '.build',
-    'DOC_SRC_PATHS': 'docs',
+    'VERSION_FILE': 'src/refdoc/__init__.py',
     'LINT_PATHS': [
         'src/refdoc',
     ],

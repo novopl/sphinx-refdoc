@@ -14,9 +14,6 @@ def repo_path(path):
     return os.path.normpath(ret)
 
 
-def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
-
 sys.path.insert(0, repo_path('src'))
 sys.path.insert(1, repo_path('.'))
 
@@ -30,8 +27,10 @@ extensions = [
     'sphinx.ext.viewcode',
 ]
 
-version = read('../VERSION').strip()
-release = read('../VERSION').strip()
+
+import refdoc
+version = refdoc.__version__
+release = refdoc.__version__
 doctest_test_doctest_blocks='default'
 templates_path = [repo_path('docs/_templates')]
 source_suffix = '.rst'
