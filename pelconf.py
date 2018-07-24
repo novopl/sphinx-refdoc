@@ -4,14 +4,14 @@ This is fabrics configuration file.
 """
 from __future__ import absolute_import
 
-
 # Configure the build
-from fabops.commands.common import conf
+from peltak.core import conf
+
 conf.init({
     'SRC_DIR': 'src',
     'SRC_PATH': 'src/refdoc',
     'BUILD_DIR': '.build',
-    'DOC_SRC_PATHS': 'docs',
+    'VERSION_FILE': 'src/refdoc/__init__.py',
     'LINT_PATHS': [
         'src/refdoc',
     ],
@@ -23,13 +23,10 @@ conf.init({
     }
 })
 
-
 # Import all commands
-from fabops.commands.clean import *
-from fabops.commands.docs import *
-from fabops.commands.release import *
-from fabops.commands.frontend import *
-from fabops.commands.git import *
-from fabops.commands.lint import *
-from fabops.commands.ops import *
-from fabops.commands.test import *
+from peltak.commands import docs
+from peltak.commands import git
+from peltak.commands import lint
+from peltak.commands import release
+from peltak.commands import test
+from peltak.commands import version
