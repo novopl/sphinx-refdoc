@@ -1,9 +1,8 @@
 coverage==4.2
-fabops==0.9.12
-Fabric3==1.12.post1
 factory-boy==2.8.1
 mock==2.0.0
 pep8==1.7.0
+peltak>=0.13.3
 pylint==1.7.4
 pytest==3.2.3
 pytest-cov==2.5.1
