@@ -131,7 +131,7 @@ class Package(DocObjBase):
                 child = Module.create(path, owner=self)
 
             else:
-                print("Unknown file type: {}".format(path))
+                print("Skipping: {}".format(path))
                 continue
 
             self.children.append(child)
