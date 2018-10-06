@@ -5,11 +5,11 @@ from click.testing import CliRunner
 from refdoc.cli import docs
 
 
-@patch('refdoc.cli.generate_docs')
+@patch('refdoc.logic.generate_docs')
 def test_uses_gen_reference_docs(generate_docs):
     runner = CliRunner()
 
     result = runner.invoke(docs, ['-isrc', '-odst'])
 
     assert result.exit_code == 0
-    generate_docs.assert_called_once_with(('src',), 'dst', False)
+    generate_docs.assert_called_once_with(('src',), 'dst', False, 0)

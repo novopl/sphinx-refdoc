@@ -4,6 +4,8 @@ Various helpers and utilities.
 """
 from __future__ import absolute_import
 
+g_verbosity = 0
+
 
 def gen_ref_file_tree(pkgs):
     """ Generate a nice tree for the reference documentation files.
@@ -32,3 +34,23 @@ def gen_ref_file_tree(pkgs):
                 lines.append(prefix + u"└── {}".format(module))
 
     return u'\n'.join(lines)
+
+
+def set_verbosity_level(level):
+    """ Set global output verbosity level.
+
+    :param int level:
+        Verbosity level. 0 means default, more means more verbose.
+    """
+    global g_verbosity
+    g_verbosity = level
+
+
+def get_verbosity_level():
+    """ Get global output verbosity level.
+
+    :return int:
+        Verbosity level. 0 means default, more means more verbose.
+    """
+    global g_verbosity
+    return g_verbosity
