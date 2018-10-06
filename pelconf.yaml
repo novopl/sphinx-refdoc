@@ -1,0 +1,34 @@
+version: '0'
+
+src_dir: 'src'
+src_path: 'src/refdoc'
+build_dir: '.build'
+version_file: 'src/refdoc/__init__.py'
+
+commands:
+  - peltak.commands.docs
+  - peltak.commands.git
+  - peltak.commands.lint
+  - peltak.commands.release
+  - peltak.commands.test
+  - peltak.commands.version
+
+lint:
+  paths:
+    - src/refdoc
+
+docs:
+  reference:
+    - src/refdoc
+
+test:
+  types:
+    default:
+      paths:
+        - test
+    unit:
+      paths:
+        - test/unit
+    e2e:
+      paths:
+        - test/e2e
