@@ -2,10 +2,23 @@
 # pylint: disable=missing-docstring
 from __future__ import absolute_import, unicode_literals
 
-from functools import wraps
+import shutil
+import tempfile
+
+import pytest
+from mock import patch, Mock, mock_open
 
 from refdoc import logic
-from mock import patch, Mock, MagicMock, mock_open
+
+
+@pytest.fixture()
+def tempdir():
+    """ Create a temp directory to store the generated files. """
+    tempdir = tempfile.mkdtemp(prefix='sphinx-refdoc-e2e-tests')
+
+    yield tempdir
+
+    shutil.rmtree(tempdir)
 
 
 @patch('refdoc.logic.generate_pkg_docs', Mock())
@@ -17,7 +30,7 @@ def test_does_not_generate_index_by_default(p_generate_root_index_rst):
     """
 
     with patch('refdoc.logic.open', mock_open()) as p_open:
-        logic.generate_docs('fake_pkgs', 'fake_out')
+        logic.generate_docs(['fake_pkgs'], 'fake_out')
 
         p_open.assert_not_called()
 
@@ -33,7 +46,7 @@ def test_generates_index_when_gen_index_is_True(p_generate_root_index_rst):
     """
 
     with patch('refdoc.logic.open', mock_open()) as p_open:
-        logic.generate_docs('fake_pkgs', 'fake_out', gen_index=True)
+        logic.generate_docs(['fake_pkgs'], 'fake_out', gen_index=True)
 
         p_open.assert_called_once()
 
@@ -49,7 +62,7 @@ def test_does_not_globally_set_verbosity_when_not_given(p_set_verbosity_level):
     :param Mock p_set_verbosity_level:
     """
 
-    logic.generate_docs('fake_pkgs', 'fake_out')
+    logic.generate_docs(['fake_pkgs'], 'fake_out')
     p_set_verbosity_level.assert_not_called()
 
 
@@ -61,5 +74,13 @@ def test_globally_sets_verbosity_when_given(p_set_verbosity_level):
     """
     :param Mock p_set_verbosity_level:
     """
-    logic.generate_docs('fake_pkgs', 'fake_out', verbose=3)
+    logic.generate_docs(['fake_pkgs'], 'fake_out', verbose=3)
     p_set_verbosity_level.assert_called_once_with(3)
+
+
+@patch('refdoc.logic.generate_pkg_docs', Mock())
+def test_does_not_crash_on_empty_pkg_paths(tempdir):
+    """
+    :param Mock p_set_verbosity_level:
+    """
+    logic.generate_docs([], tempdir, gen_index=True)
