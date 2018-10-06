@@ -34,8 +34,9 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages('src'),
     install_requires=[
-        l.strip() for l in read('requirements.txt').split()
-        if l.strip() and not l.lstrip().startswith('#')
+        'attrs>=16.3.0',
+        'click>=6.7',
+        'Sphinx>=1.5.1',
     ],
     entry_points={
         'console_scripts': [

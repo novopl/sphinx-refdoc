@@ -3,17 +3,26 @@
 The actual documentation generation happens here.
 """
 from __future__ import absolute_import, unicode_literals
+
+# stdlib imports
 import os
 from os.path import exists, join
 
+# 3rd party imports
 from . import rst
+from . import util
 from .objects import Package
 from .toctree import Toctree
 
 
-def generate_docs(pkg_paths, out_dir, no_index=False):
+def generate_docs(pkg_paths, out_dir, no_index=False, verbose=None, **reserved):
     """ Generate documentation for the given package list. """
+    del reserved    # For compatibility with future versions.
+
     pkgs = [Package.create(p) for p in pkg_paths]
+
+    if verbose is not None:
+        util.set_verbosity_level(verbose)
 
     if not no_index:
         with open(join(out_dir, 'index.rst'), 'w') as fp:

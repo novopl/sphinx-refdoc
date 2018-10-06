@@ -14,6 +14,7 @@ from os.path import sep as path_sep
 import attr
 
 from .. import rst
+from .. import util
 from ..toctree import Toctree
 from .module import Module
 from .base import DocObjBase
@@ -131,7 +132,8 @@ class Package(DocObjBase):
                 child = Module.create(path, owner=self)
 
             else:
-                print("Skipping: {}".format(path))
+                if util.get_verbosity_level() > 0:
+                    print("Skipping: {}".format(path))
                 continue
 
             self.children.append(child)
