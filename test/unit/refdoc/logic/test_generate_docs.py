@@ -2,6 +2,7 @@
 # pylint: disable=missing-docstring
 from __future__ import absolute_import, unicode_literals
 
+import os.path
 import shutil
 import tempfile
 
@@ -84,3 +85,12 @@ def test_does_not_crash_on_empty_pkg_paths(tempdir):
     :param Mock p_set_verbosity_level:
     """
     logic.generate_docs([], tempdir, gen_index=True)
+
+
+@patch('refdoc.logic.generate_pkg_docs', Mock())
+def test_does_not_crash_if_output_dir_does_not_exist(tempdir):
+    """
+    :param Mock p_set_verbosity_level:
+    """
+    invalid_dir = os.path.join(tempdir, 'invalid_dir')
+    logic.generate_docs([], invalid_dir, gen_index=True)
