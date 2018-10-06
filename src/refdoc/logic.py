@@ -15,16 +15,16 @@ from .objects import Package
 from .toctree import Toctree
 
 
-def generate_docs(pkg_paths, out_dir, no_index=False, verbose=None, **reserved):
+def generate_docs(pkg_paths, out_dir, gen_index=False, verbose=None, **kw):
     """ Generate documentation for the given package list. """
-    del reserved    # For compatibility with future versions.
+    del kw    # Exists For compatibility with future versions.
 
     pkgs = [Package.create(p) for p in pkg_paths]
 
     if verbose is not None:
         util.set_verbosity_level(verbose)
 
-    if not no_index:
+    if gen_index:
         with open(join(out_dir, 'index.rst'), 'w') as fp:
             fp.write(generate_root_index_rst(pkgs))
 
