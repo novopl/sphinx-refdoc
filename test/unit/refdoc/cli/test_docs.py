@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=missing-docstring
 from __future__ import absolute_import
 from mock import patch
 from click.testing import CliRunner

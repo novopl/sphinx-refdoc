@@ -16,6 +16,7 @@ commands:
 lint:
   paths:
     - src/refdoc
+    - test
 
 docs:
   reference:
