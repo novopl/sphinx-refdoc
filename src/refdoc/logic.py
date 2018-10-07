@@ -6,7 +6,7 @@ from __future__ import absolute_import, unicode_literals
 
 # stdlib imports
 import os
-from os.path import exists, join
+import os.path
 
 # 3rd party imports
 from . import rst
@@ -24,8 +24,11 @@ def generate_docs(pkg_paths, out_dir, gen_index=False, verbose=None, **kw):
     if verbose is not None:
         util.set_verbosity_level(verbose)
 
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+
     if gen_index:
-        with open(join(out_dir, 'index.rst'), 'w') as fp:
+        with open(os.path.join(out_dir, 'index.rst'), 'w') as fp:
             fp.write(generate_root_index_rst(pkgs))
 
     for pkg in pkgs:
@@ -36,7 +39,7 @@ def generate_root_index_rst(packages):
     """ Generate root package index file. """
     toc = Toctree()
     for pkg in packages:
-        toc.add(join(pkg.name + '/index.rst'))
+        toc.add(os.path.join(pkg.name + '/index.rst'))
 
     src = [
         rst.title('Reference documentation'),
@@ -52,13 +55,13 @@ def generate_root_index_rst(packages):
 def generate_pkg_docs(pkg, out_dir):
     """ Generate documentation for the given package in the given out_dir. """
     pkg.collect_children()
-    pkg_path = join(out_dir, pkg.name)
+    pkg_path = os.path.join(out_dir, pkg.name)
 
-    if not exists(pkg_path):
+    if not os.path.exists(pkg_path):
         os.makedirs(pkg_path)
 
     # Generate the package documentation
-    with open(join(pkg_path, 'index.rst'), 'w') as fp:
+    with open(os.path.join(pkg_path, 'index.rst'), 'w') as fp:
         fp.write(pkg.to_rst())
 
     # Generate documentation for all the children
@@ -73,5 +76,5 @@ def generate_pkg_docs(pkg, out_dir):
 
 def generate_module_docs(module, out_dir):
     """ Generate documentation for the given module in the given out_dir. """
-    with open(join(out_dir, module.name + '.rst'), 'w') as fp:
+    with open(os.path.join(out_dir, module.name + '.rst'), 'w') as fp:
         fp.write(module.to_rst())
